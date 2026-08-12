@@ -1,7 +1,7 @@
 [app]
 title = Тетя Ася
 package.name = tetyaasyaapp
-package.domain = org.test
+package.domain = com.tetyaasya
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 1.0.0
