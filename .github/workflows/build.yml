@@ -26,28 +26,6 @@ jobs:
       run: |
         pip install --upgrade pip setuptools wheel cython "buildozer<1.6.0"
 
-    - name: Generate Spec Config
-      run: |
-        echo "[app]" > buildozer.spec
-        echo "title = Tetya Asya App" >> buildozer.spec
-        echo "package.name = tetyaasyaapp" >> buildozer.spec
-        echo "package.domain = org.test" >> buildozer.spec
-        echo "source.dir = ." >> buildozer.spec
-        echo "source.include_exts = py,png,jpg,kv,atlas" >> buildozer.spec
-        echo "version = 1.0.0" >> buildozer.spec
-        echo "requirements = kivy==2.3.1, sdl2_image, pillow" >> buildozer.spec
-        echo "orientation = portrait" >> buildozer.spec
-        echo "fullscreen = 1" >> buildozer.spec
-        echo "android.permissions = INTERNET" >> buildozer.spec
-        echo "android.api = 33" >> buildozer.spec
-        echo "android.minapi = 24" >> buildozer.spec
-        echo "android.ndk_api = 24" >> buildozer.spec
-        echo "android.archs = arm64-v8a, armeabi-v7a" >> buildozer.spec
-        echo "p4a.branch = master" >> buildozer.spec
-        echo "[buildozer]" >> buildozer.spec
-        echo "log_level = 2" >> buildozer.spec
-        echo "warn_on_root = 0" >> buildozer.spec
-
     - name: Build Android APK Package
       run: |
         yes y | buildozer -v android debug
