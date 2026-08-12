@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v4
@@ -21,17 +21,13 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev libffi-dev cmake libgdbm-dev sqlite3 libsqlite3-dev bzip2 libbz2-dev liblzma-dev lld
-        sudo apt-get install -y libltdl-dev
+        sudo apt-get install -y libsdl2-image-dev libjpeg-dev libpng-dev
 
     - name: Install Build Tools
       run: |
-        pip install --upgrade pip setuptools wheel cython==0.29.36
+        pip install --upgrade pip setuptools wheel "cython<3.0.0"
         pip install "buildozer==1.5.0"
 
-    - name: Pre-configure Android SDK Path Fix
-      run: |
-        mkdir -p ~/.buildozer/android/platform/
-        
     - name: Build Android APK Package
       run: |
         yes y | buildozer -v android debug
