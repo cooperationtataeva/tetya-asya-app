@@ -1,0 +1,59 @@
+name: Build APK on GitHub Cloud
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libssl-dev libffi-dev cmake libgdbm-dev sqlite3 libsqlite3-dev bzip2 libbz2-dev liblzma-dev lld
+
+    - name: Install Build Tools
+      run: |
+        pip install --upgrade pip setuptools wheel cython "buildozer<1.6.0"
+
+    - name: Generate Spec Config
+      run: |
+        echo "[app]" > buildozer.spec
+        echo "title = Tetya Asya App" >> buildozer.spec
+        echo "package.name = tetyaasyaapp" >> buildozer.spec
+        echo "package.domain = org.test" >> buildozer.spec
+        echo "source.dir = ." >> buildozer.spec
+        echo "source.include_exts = py,png,jpg,kv,atlas" >> buildozer.spec
+        echo "version = 1.0.0" >> buildozer.spec
+        echo "requirements = kivy" >> buildozer.spec
+        echo "orientation = portrait" >> buildozer.spec
+        echo "fullscreen = 1" >> buildozer.spec
+        echo "android.permissions = INTERNET" >> buildozer.spec
+        echo "android.api = 33" >> buildozer.spec
+        echo "android.minapi = 24" >> buildozer.spec
+        echo "android.ndk_api = 24" >> buildozer.spec
+        echo "android.archs = arm64-v8a, armeabi-v7a" >> buildozer.spec
+        echo "p4a.branch = master" >> buildozer.spec
+        echo "[buildozer]" >> buildozer.spec
+        echo "log_level = 2" >> buildozer.spec
+        echo "warn_on_root = 0" >> buildozer.spec
+
+    - name: Build Android APK Package
+      run: |
+        yes y | buildozer -v android debug
+
+    - name: Upload Finished APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: TetyaAsyaApp-APK
+        path: bin/*.apk
