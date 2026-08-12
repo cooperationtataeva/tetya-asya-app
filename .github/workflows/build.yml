@@ -35,7 +35,7 @@ jobs:
         echo "source.dir = ." >> buildozer.spec
         echo "source.include_exts = py,png,jpg,kv,atlas" >> buildozer.spec
         echo "version = 1.0.0" >> buildozer.spec
-        echo "requirements = kivy" >> buildozer.spec
+        echo "requirements = kivy==2.3.1, sdl2_image, pillow" >> buildozer.spec
         echo "orientation = portrait" >> buildozer.spec
         echo "fullscreen = 1" >> buildozer.spec
         echo "android.permissions = INTERNET" >> buildozer.spec
